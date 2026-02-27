@@ -1,6 +1,8 @@
 #include "automate.h"
 #include "symbole.h"
 
+using namespace std;
+
 // ---------------------------------------------------------------- Etats
 class Etat0;
 class Etat1;
@@ -70,9 +72,9 @@ Automate::Automate(Lexer &l) : lex(l), accepte(false) {}
 
 Automate::~Automate()
 {
-   for (std::size_t i = 0; i < pileSymboles.size(); i++)
+   for (size_t i = 0; i < pileSymboles.size(); i++)
       delete pileSymboles[i];
-   for (std::size_t i = 0; i < pileEtats.size(); i++)
+   for (size_t i = 0; i < pileEtats.size(); i++)
       delete pileEtats[i];
 }
 
@@ -122,7 +124,7 @@ void Automate::empiler(Symbole *s, Etat *e)
    pileEtats.push_back(e);
 }
 
-void Automate::pop(int n, std::vector<Symbole *> &out)
+void Automate::pop(int n, vector<Symbole *> &out)
 {
    out.clear();
    for (int i = 0; i < n; i++)
@@ -137,9 +139,9 @@ void Automate::pop(int n, std::vector<Symbole *> &out)
    }
 }
 
-void Automate::deleteSymbols(std::vector<Symbole *> &v)
+void Automate::deleteSymbols(vector<Symbole *> &v)
 {
-   for (std::size_t i = 0; i < v.size(); i++)
+   for (size_t i = 0; i < v.size(); i++)
       delete v[i];
    v.clear();
 }
@@ -153,7 +155,7 @@ bool Automate::gotoExpr(Symbole *e)
 // -------------------------------------------------------------- Réductions
 void Automate::reduire(int regle)
 {
-   std::vector<Symbole *> popped;
+   vector<Symbole *> popped;
    Expr *newE = nullptr;
 
    if (regle == 5) // E -> INT

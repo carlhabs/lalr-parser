@@ -4,6 +4,8 @@
 #include <iostream>
 #include "lexer.h"
 
+using namespace std;
+
 class Automate;
 
 class Etat
@@ -29,19 +31,19 @@ public:
 
    void erreur(const char *msg)
    {
-      std::cerr << "Erreur: " << msg << std::endl;
+      cerr << "Erreur: " << msg << endl;
    }
 
 private:
    Lexer &lex;
    bool accepte;
 
-   std::vector<Etat *> pileEtats;
-   std::vector<Symbole *> pileSymboles;
+   vector<Etat *> pileEtats;
+   vector<Symbole *> pileSymboles;
 
-   void pop(int n, std::vector<Symbole *> &out);
+   void pop(int n, vector<Symbole *> &out);
    bool gotoExpr(Symbole *e);
-   void deleteSymbols(std::vector<Symbole *> &v);
+   void deleteSymbols(vector<Symbole *> &v);
 
    Automate(const Automate &);
    Automate &operator=(const Automate &);
