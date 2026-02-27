@@ -31,7 +31,6 @@ bool Automate::analyser() {
    while (!accepte) {
       Symbole* s = lex.Consulter();
       if (!s) { erreur("symbole null"); return false; }
-
       if (*(s) == ERREUR) { erreur("lexer erreur"); return false; }
 
       Etat* e = pileEtats.back();
@@ -46,14 +45,12 @@ int Automate::resultat() const {
    return e ? e->GetValeur() : 0;
 }
 
-// SHIFT
 void Automate::decalage(Symbole* s, Etat* e) {
    pileSymboles.push_back(s);
    pileEtats.push_back(e);
    lex.Avancer();
 }
 
-// GOTO (NE DOIT PAS avancer)
 void Automate::empiler(Symbole* s, Etat* e) {
    pileSymboles.push_back(s);
    pileEtats.push_back(e);
@@ -72,58 +69,65 @@ void Automate::pop(int n, std::vector<Symbole*>& out) {
    }
 }
 
+void Automate::deleteSymbols(std::vector<Symbole*>& v) {
+   for (std::size_t i = 0; i < v.size(); i++) delete v[i];
+   v.clear();
+}
+
 bool Automate::gotoExpr(Symbole* e) {
    Etat* top = pileEtats.back();
    return top->transition(*this, e);
 }
 
-// ===== REDUCTIONS =====
+// ===== REDUCTIONS (sans goto) =====
 void Automate::reduire(int regle) {
    std::vector<Symbole*> popped;
    Expr* newE = nullptr;
 
-   if (regle == 5) { // E -> INT
+   if (regle == 5) {                 // E -> INT
       pop(1, popped);
       Entier* v = dynamic_cast<Entier*>(popped[0]);
-      if (!v) { erreur("r5"); goto cleanup; }
+      if (!v) { erreur("r5"); deleteSymbols(popped); return; }
       newE = new Expr(v->GetValeur());
    }
-   else if (regle == 4) { // E -> ( E )
-      pop(3, popped); // ) E (
+   else if (regle == 4) {            // E -> ( E )
+      pop(3, popped);                // ) E (
       Expr* e = dynamic_cast<Expr*>(popped[1]);
-      if (!e) { erreur("r4"); goto cleanup; }
+      if (!e) { erreur("r4"); deleteSymbols(popped); return; }
       newE = new Expr(e->GetValeur());
    }
-   else if (regle == 3) { // E -> E * E
-      pop(3, popped); // E2 * E1
+   else if (regle == 3) {            // E -> E * E
+      pop(3, popped);                // E2 * E1
       Expr* e2 = dynamic_cast<Expr*>(popped[0]);
       Expr* e1 = dynamic_cast<Expr*>(popped[2]);
-      if (!e1 || !e2) { erreur("r3"); goto cleanup; }
+      if (!e1 || !e2) { erreur("r3"); deleteSymbols(popped); return; }
       newE = new Expr(e1->GetValeur() * e2->GetValeur());
    }
-   else if (regle == 2) { // E -> E + E
-      pop(3, popped); // E2 + E1
+   else if (regle == 2) {            // E -> E + E
+      pop(3, popped);                // E2 + E1
       Expr* e2 = dynamic_cast<Expr*>(popped[0]);
       Expr* e1 = dynamic_cast<Expr*>(popped[2]);
-      if (!e1 || !e2) { erreur("r2"); goto cleanup; }
+      if (!e1 || !e2) { erreur("r2"); deleteSymbols(popped); return; }
       newE = new Expr(e1->GetValeur() + e2->GetValeur());
    }
+   else {
+      erreur("regle inconnue");
+      return;
+   }
 
-cleanup:
-   for (std::size_t i = 0; i < popped.size(); i++) delete popped[i];
-   popped.clear();
+   deleteSymbols(popped);
 
-   if (!newE) return;
-
-   if (!gotoExpr(newE)) delete newE;
+   if (!gotoExpr(newE)) {
+      delete newE;
+   }
 }
 
-// ===== TABLE LALR =====
+// ===== TABLE LALR (State pattern) =====
 
 bool Etat0::transition(Automate& a, Symbole* s) {
    if (*s == INT)      { a.decalage(s, new Etat3()); return true; }
    if (*s == OPENPAR)  { a.decalage(s, new Etat2()); return true; }
-   if (*s == EXPR)     { a.empiler(s, new Etat1()); return true; }  // GOTO
+   if (*s == EXPR)     { a.empiler(s, new Etat1()); return true; } // GOTO
    a.erreur("etat0"); return false;
 }
 
@@ -137,7 +141,7 @@ bool Etat1::transition(Automate& a, Symbole* s) {
 bool Etat2::transition(Automate& a, Symbole* s) {
    if (*s == INT)      { a.decalage(s, new Etat3()); return true; }
    if (*s == OPENPAR)  { a.decalage(s, new Etat2()); return true; }
-   if (*s == EXPR)     { a.empiler(s, new Etat6()); return true; }  // GOTO
+   if (*s == EXPR)     { a.empiler(s, new Etat6()); return true; } // GOTO
    a.erreur("etat2"); return false;
 }
 
@@ -152,14 +156,14 @@ bool Etat3::transition(Automate& a, Symbole* s) {
 bool Etat4::transition(Automate& a, Symbole* s) {
    if (*s == INT)      { a.decalage(s, new Etat3()); return true; }
    if (*s == OPENPAR)  { a.decalage(s, new Etat2()); return true; }
-   if (*s == EXPR)     { a.empiler(s, new Etat7()); return true; }  // GOTO
+   if (*s == EXPR)     { a.empiler(s, new Etat7()); return true; } // GOTO
    a.erreur("etat4"); return false;
 }
 
 bool Etat5::transition(Automate& a, Symbole* s) {
    if (*s == INT)      { a.decalage(s, new Etat3()); return true; }
    if (*s == OPENPAR)  { a.decalage(s, new Etat2()); return true; }
-   if (*s == EXPR)     { a.empiler(s, new Etat8()); return true; }  // GOTO
+   if (*s == EXPR)     { a.empiler(s, new Etat8()); return true; } // GOTO
    a.erreur("etat5"); return false;
 }
 
