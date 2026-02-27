@@ -2,8 +2,6 @@
 #include "lexer.h"
 #include "automate.h"
 
-using namespace std;
-
 int main()
 {
    string chaine;
