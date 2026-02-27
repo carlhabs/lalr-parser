@@ -228,7 +228,7 @@ bool Etat0::transition(Automate &a, Symbole *s)
       a.empiler(s, new Etat1());
       return true;
    }
-   a.erreur("etat0");
+   a.erreur(("Etat 0 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : INT, OPENPAR, EXPR").c_str());
    return false;
 }
 
@@ -250,7 +250,7 @@ bool Etat1::transition(Automate &a, Symbole *s)
       a.accepter();
       return true;
    }
-   a.erreur("etat1");
+   a.erreur(("Etat 1 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : PLUS, MULT, FIN").c_str());
    return false;
 }
 
@@ -271,7 +271,7 @@ bool Etat2::transition(Automate &a, Symbole *s)
       a.empiler(s, new Etat6());
       return true;
    }
-   a.erreur("etat2");
+   a.erreur(("Etat 2 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : INT, OPENPAR, EXPR").c_str());
    return false;
 }
 
@@ -282,7 +282,7 @@ bool Etat3::transition(Automate &a, Symbole *s)
       a.reduire(5);
       return true;
    }
-   a.erreur("etat3");
+   a.erreur(("Etat 3 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : PLUS, MULT, CLOSEPAR, FIN").c_str());
    return false;
 }
 
@@ -303,7 +303,7 @@ bool Etat4::transition(Automate &a, Symbole *s)
       a.empiler(s, new Etat7());
       return true;
    }
-   a.erreur("etat4");
+   a.erreur(("Etat 4 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : INT, OPENPAR, EXPR").c_str());
    return false;
 }
 
@@ -324,7 +324,7 @@ bool Etat5::transition(Automate &a, Symbole *s)
       a.empiler(s, new Etat8());
       return true;
    }
-   a.erreur("etat5");
+   a.erreur(("Etat 5 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : INT, OPENPAR, EXPR").c_str());
    return false;
 }
 
@@ -345,7 +345,7 @@ bool Etat6::transition(Automate &a, Symbole *s)
       a.decalage(s, new Etat9());
       return true;
    }
-   a.erreur("etat6");
+   a.erreur(("Etat 6 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : PLUS, MULT, CLOSEPAR, FIN").c_str());
    return false;
 }
 
@@ -361,7 +361,7 @@ bool Etat7::transition(Automate &a, Symbole *s)
       a.reduire(2);
       return true;
    }
-   a.erreur("etat7");
+   a.erreur(("Etat 7 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : MULT, PLUS, CLOSEPAR, FIN").c_str());
    return false;
 }
 
@@ -372,7 +372,7 @@ bool Etat8::transition(Automate &a, Symbole *s)
       a.reduire(3);
       return true;
    }
-   a.erreur("etat8");
+   a.erreur(("Etat 0 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : PLUS, MULT, CLOSEPAR, FIN").c_str());
    return false;
 }
 
@@ -383,6 +383,6 @@ bool Etat9::transition(Automate &a, Symbole *s)
       a.reduire(4);
       return true;
    }
-   a.erreur("etat9");
+   a.erreur(("Etat 9 -> symbole inattendu '" + Etiquettes[*s] + "'. Symboles attendus : PLUS, MULT, CLOSEPAR, FIN").c_str());
    return false;
 }

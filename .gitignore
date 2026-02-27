@@ -1,4 +1,5 @@
 *.o
 *.exe
 tp
+test_parser
 /build

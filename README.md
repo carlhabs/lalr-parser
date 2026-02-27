@@ -54,3 +54,4 @@ make clean
 ## Remarques
 
 - Le parser attend une expression sur une seule ligne.
+- Nous avons généré les tests ainsi que les fichiers README et Makefile avec IA, et clean la majeure partie de notre code avec l'outil copilot de vscode ainsi que l'extension prettier.
