@@ -366,10 +366,10 @@ bool Etat7::transition(Automate &a, Symbole *s)
    {
       a.decalage(s, new Etat5());
       return true;
-   } // priorité *
+   }
    if (*s == PLUS || *s == CLOSEPAR || *s == FIN)
    {
-      a.reduire(2); // assoc gauche +
+      a.reduire(2);
       return true;
    }
    a.erreur("etat7");
