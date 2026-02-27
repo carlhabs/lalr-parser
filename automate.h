@@ -20,12 +20,8 @@ public:
    bool analyser();
    int resultat() const;
 
-   // SHIFT (terminal) : empile + avance le lexer
-   void decalage(Symbole* s, Etat* e);
-
-   // GOTO (non-terminal) : empile SANS avancer le lexer
-   void empiler(Symbole* s, Etat* e);
-
+   void decalage(Symbole* s, Etat* e);  // SHIFT
+   void empiler(Symbole* s, Etat* e);   // GOTO (sur EXPR)
    void reduire(int regle);
    void accepter() { accepte = true; }
 
@@ -42,6 +38,7 @@ private:
 
    void pop(int n, std::vector<Symbole*>& out);
    bool gotoExpr(Symbole* e);
+   void deleteSymbols(std::vector<Symbole*>& v);
 
    Automate(const Automate&);
    Automate& operator=(const Automate&);
