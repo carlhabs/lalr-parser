@@ -34,7 +34,7 @@ Exécution interactive :
 ```bash
 ./tp
 # puis saisir, par exemple :
-# Expression: 1+2*3
+# Expression: 1+2*3 ou 1 +2*3 (les espaces sont ignorés)
 ```
 
 Via canalisation (pipe) :

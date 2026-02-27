@@ -4,7 +4,6 @@ Symbole *Lexer::Consulter()
 {
    if (!tampon)
    {
-
       if (tete == flux.length())
          tampon = new Symbole(FIN);
       else
@@ -28,6 +27,9 @@ Symbole *Lexer::Consulter()
             tampon = new Symbole(PLUS);
             tete++;
             break;
+         case ' ':
+            tete++;
+            return Consulter();
          default:
             if (flux[tete] <= '9' && flux[tete] >= '0')
             {

@@ -3,69 +3,6 @@
 
 using namespace std;
 
-// ---------------------------------------------------------------- Etats
-class Etat0;
-class Etat1;
-class Etat2;
-class Etat3;
-class Etat4;
-class Etat5;
-class Etat6;
-class Etat7;
-class Etat8;
-class Etat9;
-
-class Etat0 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-class Etat1 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-class Etat2 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-class Etat3 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-class Etat4 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-class Etat5 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-class Etat6 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-class Etat7 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-class Etat8 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-class Etat9 : public Etat
-{
-public:
-   bool transition(Automate &a, Symbole *s);
-};
-
 // -------------------------------------------------------------- Automate
 
 Automate::Automate(Lexer &l) : lex(l), accepte(false) {}

@@ -3,17 +3,11 @@
 #include <vector>
 #include <iostream>
 #include "lexer.h"
+#include "etat.h"
 
 using namespace std;
 
 class Automate;
-
-class Etat
-{
-public:
-   virtual ~Etat() {}
-   virtual bool transition(Automate &automate, Symbole *s) = 0;
-};
 
 class Automate
 {
