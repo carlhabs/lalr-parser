@@ -15,7 +15,7 @@ Depuis la racine du projet :
 make
 ```
 
-Le makefile produit l'exécutable `tp`.
+Le makefile produit l'exécutable `tp` et `test_parser`.
 
 Si vous souhaitez compiler avec d'autres options :
 
