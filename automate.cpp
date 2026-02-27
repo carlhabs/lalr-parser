@@ -79,7 +79,7 @@ bool Automate::gotoExpr(Symbole* e) {
    return top->transition(*this, e);
 }
 
-// ===== REDUCTIONS (sans goto) =====
+// ===== REDUCTIONS =====
 void Automate::reduire(int regle) {
    std::vector<Symbole*> popped;
    Expr* newE = nullptr;
