@@ -85,31 +85,46 @@ void Automate::reduire(int regle) {
    if (regle == 5) { // E -> INT
       pop(1, popped);
       Entier* v = dynamic_cast<Entier*>(popped[0]);
-      if (!v) { erreur("r5"); goto cleanup; }
+      if (!v) { erreur("r5");
+         for (std::size_t i = 0; i < popped.size(); i++) delete popped[i];
+         popped.clear();
+         return;
+      }
       newE = new Expr(v->GetValeur());
    }
    else if (regle == 4) { // E -> ( E )
       pop(3, popped); // ) E (
       Expr* e = dynamic_cast<Expr*>(popped[1]);
-      if (!e) { erreur("r4"); goto cleanup; }
+      if (!e) { erreur("r4");
+         for (std::size_t i = 0; i < popped.size(); i++) delete popped[i];
+         popped.clear();
+         return;
+      }
       newE = new Expr(e->GetValeur());
    }
    else if (regle == 3) { // E -> E * E
       pop(3, popped); // E2 * E1
       Expr* e2 = dynamic_cast<Expr*>(popped[0]);
       Expr* e1 = dynamic_cast<Expr*>(popped[2]);
-      if (!e1 || !e2) { erreur("r3"); goto cleanup; }
+      if (!e1 || !e2) { erreur("r3");
+         for (std::size_t i = 0; i < popped.size(); i++) delete popped[i];
+         popped.clear();
+         return;
+      }
       newE = new Expr(e1->GetValeur() * e2->GetValeur());
    }
    else if (regle == 2) { // E -> E + E
       pop(3, popped); // E2 + E1
       Expr* e2 = dynamic_cast<Expr*>(popped[0]);
       Expr* e1 = dynamic_cast<Expr*>(popped[2]);
-      if (!e1 || !e2) { erreur("r2"); goto cleanup; }
+      if (!e1 || !e2) { erreur("r2");
+         for (std::size_t i = 0; i < popped.size(); i++) delete popped[i];
+         popped.clear();
+         return;
+      }
       newE = new Expr(e1->GetValeur() + e2->GetValeur());
    }
 
-cleanup:
    for (std::size_t i = 0; i < popped.size(); i++) delete popped[i];
    popped.clear();
 
